@@ -1,0 +1,94 @@
+{{#layout}}{{#title}}Termin buchen{{/title}}
+<div class="ui grid">
+    <div class="column">
+        <h2 class="ui icon header center aligned">
+            <i class="blue calendar outline icon"></i>
+            <div class="content">
+                Termin buchen
+                <div class="sub header">{{model.shop.name}}</div>
+            </div>
+        </h2>
+        <form id="login" class="ui form" action="/shops/{{model.shop.id}}/appointments" method="post">
+            <h4 class="ui dividing header">Persönliche Daten</h4>
+            <div class="field">
+                <label>Vor- und Zuname</label>
+                <div class="field">
+                    <input type="text" name="name" placeholder="Emma Kunterbunt">
+                </div>
+            </div>
+            <div class="field">
+                <label>Kommunikationsdienst</label>
+                <select class="ui search dropdown" name="messenger">
+                    <option value="">Kommunikationsdienst auswählen</option>
+                    {{#model.shop.messengers}}
+                        <option value="{{id}}">{{name}}</option>
+                    {{/model.shop.messengers}}
+                </select>
+            </div>
+            <div class="field">
+                <label>Kontakt</label>
+                <div class="field">
+                    <input type="text" name="contact" placeholder="+49 0163 123 456 78">
+                </div>
+            </div>
+            <h4 class="ui dividing header">Terminauswahl</h4>
+            <div class="field">
+                <div class="two fields">
+                    <div class="field">
+                        <label>Wochentag</label>
+                        <select id="selectWeekday" class="ui fluid search dropdown" name="weekday"
+                                onchange="setAvailableTimes(this.options[this.selectedIndex].value)">
+                            <option value="">Wochentag auswählen</option>
+                            {{#model.availableTimes}}
+                                <option value="{{day.name}}">{{dayDisplayName}}</option>
+                            {{/model.availableTimes}}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Uhrzeit</label>
+                        <select id="selectTime" class="ui fluid search dropdown" name="time">
+                            <option value="">Uhrzeit auswählen</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button class="ui primary button" type="submit">
+                Termin buchen
+            </button>
+            <a class="ui button" href="/shops/{{model.shop.id}}">
+                Abbrechen
+            </a>
+        </form>
+    </div>
+</div>
+<script>
+    $('.ui.dropdown')
+            .dropdown()
+    ;
+    $('.ui.form')
+            .form({
+                fields: {
+                    name: 'empty',
+                    contact: 'empty',
+                    messenger: 'empty',
+                    weekday: 'empty',
+                    time: 'empty'
+                }
+            })
+    ;
+
+
+    const availableTimes = {{& model.availableTimesJson}};
+
+    function setAvailableTimes(selectedWeekday) {
+        const newOptions = availableTimes[selectedWeekday];
+
+        const $el = $("#selectTime");
+        $el.empty(); // remove old options
+        $.each(newOptions, function (key, value) {
+            $el.append($("<option></option>")
+                    .attr("value", value).text(value));
+        });
+    }
+</script>
+{{/layout}}

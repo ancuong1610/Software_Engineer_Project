@@ -1,0 +1,46 @@
+{{#layout}}{{#title}}Ladenverwaltung - Laden bearbeiten{{/title}}
+<div class="large container">
+    {{>layout/owner}}
+    <div class="ui top attached tabular menu">
+        <a class="item" href="/owner" data-tab="first">Übersicht</a>
+        <a class="item" href="/owner/appointments" data-tab="second">Termine</a>
+        <a class="item" href="/owner/shop-edit" data-tab="third">Shop ändern</a>
+        <a class="active item" href="/owner/edit" data-tab="fourth">Daten ändern</a>
+    </div>
+    <div class="ui bottom attached tab segment active">
+        <h3 class="ui header">Persönliche Daten ändern</h3>
+        <form id="updateOwnerForm" class="ui form" action="/owner" method="post">
+            <div class="field">
+                <label>Ihr Name</label>
+                <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="name" value="{{model.owner.name}}">
+                </div>
+            </div>
+            <div class="field">
+                <label>E-Mail</label>
+                <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="text" name="email" value="{{model.owner.email}}">
+                </div>
+            </div>
+
+            <button class="ui blue submit button" type="submit">Aktualisieren</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.checkbox')
+            .checkbox()
+    ;
+    $('.ui.form')
+            .form({
+                fields: {
+                    "name": 'empty',
+                    "email": 'email'
+                }
+            })
+    ;
+</script>
+{{/layout}}

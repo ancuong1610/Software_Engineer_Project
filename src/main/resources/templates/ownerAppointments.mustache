@@ -1,0 +1,74 @@
+{{#layout}}{{#title}}Ladenverwaltung - Termine{{/title}}
+<div class="large container">
+    {{>layout/owner}}
+    <div class="ui top attached tabular menu">
+        <a class="item" href="/owner" data-tab="first">Übersicht</a>
+        <a class="item active" href="/owner/appointments" data-tab="second">Termine</a>
+        <a class="item" href="/owner/shop-edit" data-tab="third">Shop ändern</a>
+        <a class="item" href="/owner/edit" data-tab="fourth">Daten ändern</a>
+    </div>
+    <div class="ui bottom attached tab segment active">
+        <div class="ui form">
+            <div class="three fields">
+                <div class="field">
+                    <a class="ui checkbox" href="/owner/appointments?filter={{model.flipPastFilterQueryValue}}">
+                        <input type="checkbox" id="cbFilterPast" tabindex="0" class="hidden" {{#model.filterPastChecked}} checked {{/model.filterPastChecked}}>
+                        <label>Vergangen</label>
+                    </a>
+                </div>
+                <div class="field">
+                    <a class="ui checkbox" href="/owner/appointments?filter={{model.flipTodayFilterQueryValue}}">
+                        <input type="checkbox" id="cbFilterToday" tabindex="0" class="hidden" {{#model.filterTodayChecked}} checked {{/model.filterTodayChecked}}>
+                        <label>Heute</label>
+                    </a>
+                </div>
+                <div class="field">
+                    <a class="ui checkbox" href="/owner/appointments?filter={{model.flipFutureFilterQueryValue}}">
+                        <input type="checkbox" id="cbFilterFuture" tabindex="0" class="hidden" {{#model.filterFutureChecked}} checked {{/model.filterFutureChecked}}>
+                        <label>Bevorstehend</label>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="ui very basic celled compact table">
+            <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Uhrzeit</th>
+                <th>Kunde</th>
+                <th>Kontakt</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#model.appointments}}
+                <tr>
+                    <td class="collapsing">
+                        {{date}}
+                    </td>
+                    <td class="collapsing">{{time}}</td>
+                    <td>
+                        {{customerName}}
+                    </td>
+                    <td>
+                        <div class="ui label">
+                            {{chosenMessenger}}
+                        </div>
+                        {{videoMessengerContact}}
+                    </td>
+                    <td class="collapsing">
+                        <form id="delAppointment-{{id}}" class="ui form"
+                              action="/owner/appointments/{{id}}/delete"
+                              method="post">
+                            <button class="ui icon button" type="submit">
+                                <i class="trash icon"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {{/model.appointments}}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{/layout}}

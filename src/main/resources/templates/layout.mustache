@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>{{{layout.title}}}</title>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" type="text/css" href="/css/semantic.min.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="/css/semantic.min.js"></script>
+</head>
+<body>
+<div class="ui stackable blue inverted menu attached">
+    <div class="item">
+        <img src="/images/logo.png">
+    </div>
+    <a class="item" href="/">Alle Läden</a>
+    <div class="right menu">
+        {{#authenticated}}
+            <a class="ui item" href="/owner">
+                Ladenverwaltung
+            </a>
+            <a class="ui item" href="/logout">
+                Logout
+            </a>
+        {{/authenticated}}
+        {{^authenticated}}
+            <a class="ui item" href="/registration">
+                Registrieren
+            </a>
+            <a class="ui item" href="/login">
+                Login
+            </a>
+        {{/authenticated}}
+    </div>
+</div>
+<div class="ui main text container" style="padding-top: 30px">
+    {{{layout.body}}}
+</div>
+<script>
+
+</script>
+</body>
+</html>

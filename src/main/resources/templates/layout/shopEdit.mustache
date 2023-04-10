@@ -1,0 +1,111 @@
+<div class="field">
+    <label>Name des Ladens</label>
+    <div class="ui left icon input">
+        <i class="info icon"></i>
+        <input type="text" name="shop[name]" placeholder="Emmas Wein und Tee"
+               value="{{#model.shop.name}}{{model.shop.name}}{{/model.shop.name}}">
+    </div>
+</div>
+<div class="field">
+    <label>Beschreibung</label>
+    <textarea rows="5" name="shop[description]"
+              placeholder="Emmas Wein und Tee">{{#model.shop.description}}{{model.shop.description}}{{/model.shop.description}}</textarea>
+</div>
+<div class="field">
+    <label>Schlagworte (durch Leerzeichen getrennt)</label>
+    <div class="ui left icon input">
+        <i class="tags icon"></i>
+        <input type="text" name="shop[tags]" placeholder="Kaffee Wein Tee"
+               value="{{#model.shop.tags}}{{#model.shop.tags}}{{.}} {{/model.shop.tags}}{{/model.shop.tags}}">
+    </div>
+</div>
+<div class="field">
+    <label>Kommunikationsmittel</label>
+    <select multiple="" class="ui dropdown" name="shop[messengers]">
+        <option value="">Kommunikationsmittel auswählen</option>
+        {{#model.shop.messengers}}
+            <option value="{{id}}"
+                    {{#enabled}}selected{{/enabled}}>{{name}}
+            </option>
+        {{/model.shop.messengers}}
+        {{^model.shop.messengers}}
+            <option value="WHATSAPP">WhatsApp</option>
+            <option value="FACETIME">Facetime</option>
+            <option value="GOOGLEDUO">Google Duo</option>
+            <option value="SKYPE">Skype</option>
+            <option value="TELEGRAM">Telegram</option>
+            <option value="ZOOM">Zoom</option>
+        {{/model.shop.messengers}}
+    </select>
+</div>
+<div class="field">
+    <label>Buchbare Zeiten</label>
+    <table class="ui very basic celled very small table">
+        <thead>
+        <tr>
+            <th class="twelve wide">Wochentag</th>
+            <th>Von</th>
+            <th>Bis</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#model.shop.openingHours}}
+            <tr>
+                <td>
+                    <div class="inline field">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="shop[opening-hours-{{day.name}}-open]"
+                                   {{#content}}checked{{/content}}
+                                   class="hidden" onchange="weekdayChangeListener('{{day.name}}', this.checked)">
+                            <label>{{dayDisplayName}}</label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="inline field">
+                        <div class="ui small input">
+                            <input type="text" name="shop[opening-hours-{{day.name}}-start]"
+                                   id="shop-opening-hours-{{day.name}}-start" placeholder="09:00"
+                                   value="{{#content}}{{openingTime}}{{/content}}"
+                                   {{^content}}disabled{{/content}}>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="inline field">
+                        <div class="ui small input">
+                            <input type="text" name="shop[opening-hours-{{day.name}}-end]"
+                                   id="shop-opening-hours-{{day.name}}-end" placeholder="17:00"
+                                   value="{{#content}}{{closingTime}}{{/content}}"
+                                   {{^content}}disabled{{/content}}>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {{/model.shop.openingHours}}
+        </tbody>
+    </table>
+</div>
+<div class="field">
+    <label>Terminreservierungsdauer pro Kunde (in Minuten)</label>
+    <div class="ui left icon input">
+        <i class="hourglass end icon"></i>
+        <input type="number" name="shop[reservation-duration]" placeholder="15"
+               value="{{#model.shop.minsPerCustomer}}{{model.shop.minsPerCustomer}}{{/model.shop.minsPerCustomer}}">
+    </div>
+</div>
+<script>
+    const timeRegex = '/^([01][0-9]|2[0-3]):([0-5][0-9])$/';
+
+    function weekdayChangeListener(id, isOpened) {
+        $("#shop-opening-hours-" + id + "-start").prop("disabled", !isOpened);
+        $("#shop-opening-hours-" + id + "-end").prop("disabled", !isOpened);
+    }
+
+    $('.ui.dropdown')
+            .dropdown()
+    ;
+    $('.ui.checkbox')
+            .checkbox()
+    ;
+</script>

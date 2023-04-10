@@ -1,0 +1,73 @@
+{{#layout}}{{#title}}Registrierung{{/title}}
+<div class="ui middle aligned grid">
+    <div class="column">
+        <h2 class="ui center aligned blue icon header">
+            <i class="circular building icon"></i>
+            Neuen Laden registrieren
+        </h2>
+        <form id="registrationForm" class="ui form" action="/registration" method="post">
+            <h3 class="ui header">Persönliche Daten</h3>
+            <div class="field">
+                <label>Ihr Name</label>
+                <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="account[name]" placeholder="Emma Kunterbunt">
+                </div>
+            </div>
+            <div class="field">
+                <label>E-Mail</label>
+                <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="text" name="account[email]" placeholder="emma@heiner-wein.de">
+                </div>
+            </div>
+            <div class="field">
+                <label>Passwort</label>
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="account[password]" placeholder="Password">
+                </div>
+            </div>
+            {{#passwordError}}
+                <div class="ui message red">
+                    Das gewählte Passwort entspricht nicht den Sicherheitsanforderungen. Bitte wählen Sie ein sicheres
+                    Passwort.
+                </div>
+            {{/passwordError}}
+            <div class="field">
+                <label>Passwort wiederholen</label>
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="account[password-repeat]" placeholder="Password">
+                </div>
+            </div>
+            <div class="ui divider"></div>
+            <h3 class="ui header">Daten des Ladens</h3>
+            {{>layout/shopEdit}}
+            <button class="ui fluid large blue submit button" type="submit">Registrieren</button>
+        </form>
+
+    </div>
+</div>
+<script>
+    $('.ui.form')
+            .form({
+                fields: {
+                    "account[name]": 'empty',
+                    "account[email]": 'email',
+                    "account[password]": ['empty'],
+                    "account[password-repeat]": 'match[account[password]]',
+                    "shop[name]": ['minLength[6]', 'empty'],
+                    "shop[description]": ['minLength[6]', 'empty'],
+                    "shop[tags]": 'empty',
+                    "shop[messengers]": ['minCount[1]', 'empty'],
+                    "shop[reservation-duration]": ['integer', 'empty'],
+                    {{#weekdays}}
+                        "shop[opening-hours-{{id}}-start]": 'regExp[' + timeRegex + ']',
+                        "shop[opening-hours-{{id}}-end]": 'regExp[' + timeRegex + ']',
+                    {{/weekdays}}
+                }
+            })
+    ;
+</script>
+{{/layout}}

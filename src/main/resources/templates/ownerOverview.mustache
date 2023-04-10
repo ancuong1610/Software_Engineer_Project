@@ -1,0 +1,74 @@
+{{#layout}}{{#title}}Ladenverwaltung - Ihr Laden{{/title}}
+<div class="large container">
+    {{>layout/owner}}
+    <div class="ui top attached tabular menu">
+        <a class="item active" href="/owner" data-tab="first">Übersicht</a>
+        <a class="item" href="/owner/appointments" data-tab="second">Termine</a>
+        <a class="item" href="/owner/shop-edit" data-tab="third">Shop ändern</a>
+        <a class="item" href="/owner/edit" data-tab="fourth">Daten ändern</a>
+    </div>
+    <div class="ui bottom attached tab segment active">
+        <h2 class="ui header">
+            Reporting
+        </h2>
+        <div class="ui horizontal statistics">
+            <div class="blue statistic">
+                <div class="value">
+                    <i class="history icon"></i> {{model.report.appointmentsLastWeek}}
+                </div>
+                <div class="label">
+                    Termine letzte Woche
+                </div>
+            </div>
+            <div class="blue statistic">
+                <div class="value">
+                    <i class="calendar outline icon"></i> {{model.report.appointmentsCurrentWeek}}
+                </div>
+                <div class="label">
+                    Termine diese Woche
+                </div>
+            </div>
+            <div class="blue statistic">
+                <div class="value">
+                    <i class="chart line icon"></i> {{model.report.appointmentsNextWeek}}
+                </div>
+                <div class="label">
+                    Termine nächste Woche
+                </div>
+            </div>
+            {{#model.report.mostPopularMessenger}}
+                <div class="blue statistic">
+                    <div class="value">
+                        <i class="mobile phone icon"></i> {{model.report.mostPopularMessenger.name}}
+                    </div>
+                    <div class="label">
+                        Beliebtester Kommunikationsdienst
+                    </div>
+                </div>
+            {{/model.report.mostPopularMessenger}}
+            <div class="blue statistic">
+                <div class="value">
+                    <i class="user icon"></i> {{model.report.totalCustomers}}
+                </div>
+                <div class="label">
+                    Anzahl Kunden
+                </div>
+            </div>
+        </div>
+        <h2 class="ui header">
+            Nächster Termin
+        </h2>
+        <div class="ui message">
+            {{#model.nextAppointment}}
+                <p>{{model.nextAppointment.date}} - {{model.nextAppointment.time}}<br/>
+                    mit <i>{{model.nextAppointment.customerName}}</i> über
+                    <i>{{model.nextAppointment.chosenMessenger}}</i></p>
+                <p><a class="ui button" href="/owner/appointments">Zu den Terminen</a></p>
+            {{/model.nextAppointment}}
+            {{^model.nextAppointment}}
+                <p>Es steht kein Termin an.</p>
+            {{/model.nextAppointment}}
+        </div>
+    </div>
+</div>
+{{/layout}}

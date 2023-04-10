@@ -1,0 +1,44 @@
+{{#model.shop}}
+    <h2 class="ui center aligned blue icon header">
+        <i class="circular building icon"></i>
+        {{name}}
+        <div class="sub header">
+            {{#tags}}
+                #{{.}}
+            {{/tags}}
+        </div>
+    </h2>
+    <div class="ui segment">
+        <p>{{description}}</p>
+    </div>
+    <h3 class="ui header">
+        Kommunikationsmöglichkeiten
+    </h3>
+    {{#messengers}}
+        {{#enabled}}
+            <div class="ui label">
+                {{name}}
+            </div>
+        {{/enabled}}
+    {{/messengers}}
+    <h3 class="ui header">
+        Buchbare Zeiten
+    </h3>
+    <table class="ui very basic celled small table">
+        <thead>
+        <tr>
+            <th class="twelve wide">Wochentag</th>
+            <th>Uhrzeiten</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#openingHours}}
+            <tr>
+                <td>{{dayDisplayName}}</td>
+                <td>{{#content}}{{content.openingTime}}
+                    - {{content.closingTime}}{{/content}}{{^content}}-{{/content}}</td>
+            </tr>
+        {{/openingHours}}
+        </tbody>
+    </table>
+{{/model.shop}}

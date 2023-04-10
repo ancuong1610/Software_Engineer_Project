@@ -1,0 +1,61 @@
+{{#layout}}{{#title}}Laden Übersicht{{/title}}
+<div class="container">
+
+    <div class="ui grid stackable">
+        <div class="two column row">
+            <div class="column">
+                <h1>Läden</h1>
+            </div>
+            <div class="column right aligned">
+                <form id="search" class="ui form small" action="/" method="get">
+                    <div class="ui search">
+                        <div class="ui icon input">
+                            <input class="prompt" type="text" name="searchText" placeholder="Läden durchsuchen"
+                                   value="{{model.searchText}}">
+                        </div>
+                        <button class="circular ui icon button" type="submit">
+                            <i class="icon search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="ui very basic celled table">
+    <thead>
+    <tr>
+        <th>Laden</th>
+        <th>Kontakt</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#model.shops}}
+        <tr>
+            <td>
+                <h4 class="ui image header">
+                    <div class="content">
+                        <a href="/shops/{{id}}">{{name}}</a>
+                        <div class="sub header">
+                            {{#tags}}
+                                #{{.}}
+                            {{/tags}}
+                        </div>
+                    </div>
+                </h4>
+            </td>
+            <td>
+                {{#messengers}}
+                    {{#enabled}}
+                        <div class="ui label">
+                            {{name}}
+                        </div>
+                    {{/enabled}}
+                {{/messengers}}
+            </td>
+        </tr>
+    {{/model.shops}}
+    </tbody>
+</table>
+{{/layout}}

@@ -1,0 +1,39 @@
+{{#layout}}{{#title}}Ladenverwaltung - Laden bearbeiten{{/title}}
+<div class="large container">
+    {{>layout/owner}}
+    <div class="ui top attached tabular menu">
+        <a class="item" href="/owner" data-tab="first">Übersicht</a>
+        <a class="item" href="/owner/appointments" data-tab="second">Termine</a>
+        <a class="active item" href="/owner/shop-edit" data-tab="third">Shop ändern</a>
+        <a class="item" href="/owner/edit" data-tab="fourth">Daten ändern</a>
+    </div>
+    <div class="ui bottom attached tab segment active">
+        <h3 class="ui header">Daten des Ladens</h3>
+        <form id="updateShopForm" class="ui form" action="/owner/shop" method="post">
+            {{>layout/shopEdit}}
+            <button class="ui blue submit button" type="submit">Aktualisieren</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    $('.ui.checkbox')
+            .checkbox()
+    ;
+    $('.ui.form')
+            .form({
+                fields: {
+                    "shop[name]": ['minLength[6]', 'empty'],
+                    "shop[description]": ['minLength[6]', 'empty'],
+                    "shop[tags]": 'empty',
+                    "shop[messengers]": ['minCount[1]', 'empty'],
+                    "shop[reservation-duration]": ['integer', 'empty'],
+                    {{#weekdays}}
+                        "shop[opening-hours-{{id}}-start]": 'regExp[' + timeRegex + ']',
+                        "shop[opening-hours-{{id}}-end]": 'regExp[' + timeRegex + ']',
+                    {{/weekdays}}
+                }
+            })
+    ;
+</script>
+{{/layout}}

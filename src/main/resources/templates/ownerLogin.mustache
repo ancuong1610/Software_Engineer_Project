@@ -1,0 +1,33 @@
+{{#layout}}{{#title}}Besitzer Login{{/title}}
+<div class="ui middle aligned center aligned grid">
+    <div class="column">
+        <h2 class="ui blue image header">
+            <div class="content">Verkäufer Login</div>
+        </h2>
+        {{#failure}}
+            <div class="ui negative message">
+                Login fehlgeschlagen. Bitte überprüfen Sie Nutzername und Passwort.
+            </div>
+        {{/failure}}
+        <form id="login" class="ui form" action="/login" method="post">
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="user icon"></i>
+                    <input type="text" name="username" placeholder="Nutzername">
+                </div>
+            </div>
+            <div class="field">
+                <div class="ui left icon input">
+                    <i class="lock icon"></i>
+                    <input type="password" name="password" placeholder="Passwort">
+                </div>
+            </div>
+            <button class="ui fluid large blue submit button" type="submit">Login</button>
+        </form>
+        <div class="ui small message">
+            Noch kein Konto?
+            <a href="/registration">Jetzt registrieren!</a>
+        </div>
+    </div>
+</div>
+{{/layout}}
