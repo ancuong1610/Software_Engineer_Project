@@ -1,7 +1,5 @@
 package de.hda.fbi.efussgaengerzone.domain.model.appointment;
 
-import java.time.LocalDate;
-
 public class AppointmentFilterToday implements AppointmentFilter {
 
     public static final AppointmentFilterToday INSTANCE = new AppointmentFilterToday();
@@ -10,8 +8,9 @@ public class AppointmentFilterToday implements AppointmentFilter {
 
     }
 
+    // Zu implementieren in Praktikum 6
     @Override
     public boolean test(Appointment appointment) {
-        return appointment.dateTime().toLocalDate().isEqual(LocalDate.now());
+        return true;
     }
 }

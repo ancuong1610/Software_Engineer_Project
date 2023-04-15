@@ -1,5 +1,6 @@
 Aufbau eFußgängerzone
 ============================
+*Import von https://code.fbi.h-da.de/f.buehler/ss23_se_finale_loesung/-/tree/main/
 
 *Hinweis für Studenten:* Teile dieser Dokumentation ergeben sich erst durch Wissen der späteren
 Vorlesungsveranstaltungen. Fortgeschrittene Themen aus dem Teil Software Architektur werden in der Vorlesung nur am
@@ -123,8 +124,8 @@ Falls die Run-Config nicht standardmäßig geladen sein sollte, sind die folgend
 Nach dem Start der Applikation ist das Frontend unter `http://localhost:8080` erreichbar. Wird die Applikation wie oben
 beschrieben im `debug` Profil gestartet, ist anschließend ein Login im Shop mit folgenden Zugangsdaten möglich:
 
-Shop mit Termindaten: <br>
-Username: `owner@cofee.shop`
-Password: `123`
+Alternative 1 (Shop mit Termindaten):
+Username: `owner@cofee.shop`, Password: `123`
 
-
+Alternative 2 (Shop ohne Termindaten):
+Username: `owner@cigar.shop`, Password: `123`

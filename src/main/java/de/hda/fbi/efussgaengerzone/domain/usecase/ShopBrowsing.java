@@ -28,18 +28,14 @@ public class ShopBrowsing {
         return shops.stream().findFirst().orElseThrow();
     }
 
-    // Zu ändern im Praktikum 4
     public Set<Shop> findAll() {
-        log.info("finding all shops");
-        return shopRepository.findAll();
+        return Set.of();
     }
 
-    // Zu ändern im Praktikum 4
     public Set<Shop> findShopsByQuery(Set<String> words, Set<Tag> tags) {
         return Set.of();
     }
 
-    // Zu ändern im Praktikum 4
     public Optional<Shop> findShopById(UUID uuid) {
         log.info("looking up shop for id {}", uuid);
         return shopRepository.findById(uuid);
