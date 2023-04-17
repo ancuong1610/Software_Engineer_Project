@@ -27,7 +27,7 @@ class AuthInterceptor implements HandlerInterceptor {
         // Adds an object to the ModelAndView with information about whether
         // the user is authenticated or not.
         // This flag can be evaluated by the mustache templates to show a login or logout button
-        if (modelAndView != null) {
+        if (modelAndView != null && request.getCookies() != null) {
             boolean isAuthenticated = Arrays.stream(request.getCookies()).anyMatch(c -> COOKIE_NAME.equals(c.getName()));
             modelAndView.addObject("authenticated", isAuthenticated);
         }
