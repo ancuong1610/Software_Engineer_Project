@@ -1,0 +1,45 @@
+@startuml
+class Shop{
+    id
+    name : String
+    description : String
+    supportedVideo : Set<VideoMessenger>
+    weeklyOpeningHour : WeeklyOpeningHour
+    tags : Set<Tag>
+    active : Boolean
+    minsPerCustomer : Interger
+    ownerEmail : String
+}
+
+class Owner{
+    name : String
+    email : String
+    password : String
+}
+
+class Appointment{
+    id
+    customerName : String
+    chosenMessage : VideoMessenger
+    videoMessageContact : String
+    dateTime : Date
+    duration : Duration
+}
+
+class OpeningHours{
+    openTime : Time
+    closeTime : Time
+}
+
+enum VideoMessenger{
+    WhatsApp
+    Skype
+    Zoom
+}
+
+Shop "1" -- "1" Owner : owns <
+Shop "1" *--> "1...*" Appointment : book
+Shop "1" -- "*" VideoMessenger : use with
+Shop "0...*" o--> "0...*"  OpeningHours
+
+@enduml
