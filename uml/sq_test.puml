@@ -1,11 +1,34 @@
 @startuml
-'https://plantuml.com/sequence-diagram
-
 autonumber
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+User -> System: Register as shop owner
+activate System
+System -> System: Validate user input
+System -> DB: Check if email is already registered
+DB --> System: Result of email check
+alt email already registered
+System -> User: "Email is already registered"
+deactivate System
+end
+System -> PasswordService: Check password strength
+PasswordService --> System: Password strength score
+alt password score is too weak
+System -> User: "Password is too weak"
+deactivate System
+end
+System -> EmailService: Send confirmation email
+EmailService --> System: Email sending status
+alt email not sent
+System -> User: "Failed to send confirmation email"
+deactivate System
+end
+System -> DB: Save shop owner data
+DB --> System: Result of save operation
+alt save operation failed
+System -> User: "Failed to save shop owner data"
+deactivate System
+end
+System -> User: "Registration successful"
+deactivate System
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
 @enduml
