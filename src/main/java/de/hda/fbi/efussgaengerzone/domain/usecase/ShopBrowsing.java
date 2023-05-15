@@ -36,6 +36,8 @@ public class ShopBrowsing {
         return Set.of();
     }
 
+    //find shop by ID commit to remote branch
+
     public Optional<Shop> findShopById(UUID uuid) {
         log.info("looking up shop for id {}", uuid);
         return shopRepository.findById(uuid);
