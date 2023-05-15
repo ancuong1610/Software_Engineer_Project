@@ -41,4 +41,10 @@ public class ShopBrowsing {
         return shopRepository.findById(uuid);
     }
 
+    public Set<Shop> getAllShops() {
+        log.info("finding all shops");
+        return shopRepository.findAll();
+    }
+
+
 }
