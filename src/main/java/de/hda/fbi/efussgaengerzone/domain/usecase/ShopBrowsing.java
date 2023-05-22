@@ -29,24 +29,34 @@ public class ShopBrowsing {
     }
 
     public Set<Shop> findAll() {
-        return Set.of();
+        log.info("finding all shops");
+        return shopRepository.findAll();
     }
 
     public Set<Shop> findShopsByQuery(Set<String> words, Set<Tag> tags) {
-        return Set.of();
+        log.info("finding all shops with words {} and tags {}", words, tags);
+
+        if (tags.isEmpty()) {
+            log.error("no words or tags provided for shop search");
+            throw new IllegalArgumentException("no words or tags provided");
+        }
+
+        return shopRepository.findPredicate(shop -> shopHasTags(shop, tags));
     }
 
-    //find shop by ID commit to remote branch
+    private boolean shopNameContainsWord(Shop shop, Set<String> words) {
+        return words.stream()
+                .anyMatch(word -> shop.name().toLowerCase().contains(word));
+    }
+
+    private boolean shopHasTags(Shop shop, Set<Tag> tags) {
+        return tags.stream()
+                .anyMatch(tag -> shop.tags().contains(tag));
+    }
 
     public Optional<Shop> findShopById(UUID uuid) {
         log.info("looking up shop for id {}", uuid);
         return shopRepository.findById(uuid);
     }
-
-    public Set<Shop> getAllShops() {
-        log.info("finding all shops");
-        return shopRepository.findAll();
-    }
-
 
 }
