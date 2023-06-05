@@ -12,10 +12,10 @@ build:
   stage: build
   image: $BUILD_IMAGE
   script:
-    - ./mvnw build --fail-at-end
+    - ./mvnw verify --fail-at-end
   artifacts:
     paths:
-      - public
+      - target
     expire_in: 8 hours
   cache:
     key: ${CI_COMMIT_REF_SLUG}
