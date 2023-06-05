@@ -1,0 +1,57 @@
+variables:
+  BUILD_IMAGE: "amazoncorretto:19-alpine-jdk"
+  SONAR_URL: https://sonarqube-software-engineering-sonarqube-software-engeneering.apps.ocp.fbi.h-da.de
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+
+stages:
+  - build
+  - deploy
+
+# zu implementieren in Praktikum 6
+build:
+  stage: < LÜCKE >
+  image: $BUILD_IMAGE
+  script:
+    - ./mvnw < LÜCKE > --fail-at-end
+  artifacts:
+    paths:
+      - < LÜCKE >
+    expire_in: 8 hours
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .m2/repository
+
+# zu implementieren in Praktikum 6/9
+pages:
+  stage: < LÜCKE >
+  variables:
+    GIT_STRATEGY: fetch
+  image: $BUILD_IMAGE
+  dependencies: [ ]
+  script:
+    - apk add gettext
+    - mkdir public
+    - envsubst '$CI_PROJECT_NAME,$CI_COMMIT_TAG' < doc/index.html > public/index.html
+
+    - ./mvnw package
+    - mkdir public/release
+    - cp target/efussgaengerzone-*.jar public/release/app.jar
+
+    - ./mvnw javadoc:javadoc
+    - mkdir public/apidocs
+    - cp -rv target/site/apidocs/* public/apidocs
+
+    - mkdir public/jacoco
+    - cp -rv target/site/jacoco/* public/jacoco
+
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+  artifacts:
+    paths:
+      - public
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .m2/repository
