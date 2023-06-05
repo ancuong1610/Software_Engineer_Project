@@ -16,6 +16,11 @@ public class ShopBrowsing {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(ShopBrowsing.class);
     private final ShopRepository shopRepository;
 
+    /*
+    es wird ein leeres Ergebnis zurückgegeben, weil kein Shop zu den Filtern passt
+    es werden ein oder mehrere Shops zurückgegeben, die zu den Filtern passen (überprüfen Sie hier mehrere
+    Kombination von Filtern)
+     */
     public ShopBrowsing(ShopRepository shopRepository) {
         this.shopRepository = shopRepository;
     }
@@ -28,6 +33,10 @@ public class ShopBrowsing {
         return shops.stream().findFirst().orElseThrow();
     }
 
+    /*
+    es wird eine leere Liste zurückgegeben, wenn keine Shops existieren
+    es werden alle Shops zurückgegeben
+     */
     public Set<Shop> findAll() {
         log.info("finding all shops");
         return shopRepository.findAll();
@@ -54,6 +63,9 @@ public class ShopBrowsing {
                 .anyMatch(tag -> shop.tags().contains(tag));
     }
 
+    /* ein Shop wird anhand der ID zurückgegeben
+    der Shop mit der gewählten ID existiert nicht
+     */
     public Optional<Shop> findShopById(UUID uuid) {
         log.info("looking up shop for id {}", uuid);
         return shopRepository.findById(uuid);

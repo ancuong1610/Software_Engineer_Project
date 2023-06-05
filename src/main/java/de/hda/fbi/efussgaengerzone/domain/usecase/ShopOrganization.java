@@ -15,6 +15,9 @@ public class ShopOrganization {
         this.shopRepository = shopRepository;
     }
 
+    /*
+    der Termin wurde im Repository-Mock gespeichert
+     */
     public void createShop(Shop shop) {
 
     }
