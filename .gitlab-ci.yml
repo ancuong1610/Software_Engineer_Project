@@ -24,7 +24,7 @@ build:
 
 # zu implementieren in Praktikum 6/9
 pages:
-  stage: deploy
+  stage: build
   variables:
     GIT_STRATEGY: fetch
   image: $BUILD_IMAGE
