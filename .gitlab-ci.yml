@@ -15,7 +15,7 @@ build:
     - ./mvnw verify --fail-at-end
   artifacts:
     paths:
-      - target
+      - "target"
     expire_in: 8 hours
   cache:
     key: ${CI_COMMIT_REF_SLUG}
