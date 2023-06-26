@@ -10,7 +10,7 @@
 		<!-- lookup parent from repository -->
 	</parent>
 	<groupId>de.hda.fbi</groupId>
-	<artifactId>efussgaengerzone</artifactId>
+	<artifactId>efussgaengerzone_mo2_p4</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>efussgaengerzone</name>
 	<properties>
