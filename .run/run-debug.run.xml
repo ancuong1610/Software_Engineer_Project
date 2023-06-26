@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
     <configuration default="false" name="run-debug" type="Application" factoryName="Application">
         <option name="MAIN_CLASS_NAME" value="de.hda.fbi.efussgaengerzone.EfussgaengerzoneApplication"/>
-        <module name="efussgaengerzone"/>
+        <module name="efussgaengerzone_mo2_p4"/>
         <option name="VM_PARAMETERS" value="-Dspring.profiles.active=debug"/>
         <method v="2">
             <option name="Make" enabled="true"/>
