@@ -2,9 +2,12 @@ variables:
   BUILD_IMAGE: "amazoncorretto:19-alpine-jdk"
   SONAR_URL: https://sonarqube-software-engineering-sonarqube-software-engeneering.apps.ocp.fbi.h-da.de
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
+  CI_PROJECT_NAME: "efussgaengerzone_mo2_p4"
+  SONAR_TOKEN: "sqp_c8a4102cdaa27151d26fb17b0e82c303c13cad68"
 
 stages:
   - build
+  - analyze
   - deploy
 
 # zu implementieren in Praktikum 6
@@ -12,11 +15,33 @@ build:
   stage: build
   image: $BUILD_IMAGE
   script:
+    - chmod 755 ./mvnw
     - ./mvnw verify --fail-at-end
   artifacts:
-    paths:
+    paths: # target
       - "target"
     expire_in: 8 hours
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - .m2/repository
+
+# zu implementieren in Praktikum 9
+analyze:
+  stage: analyze
+  image: $BUILD_IMAGE
+  dependencies: [ build ]
+  allow_failure: true
+  script:
+    - chmod 755 ./mvnw
+    - branchName="$CI_COMMIT_REF_NAME"
+    - |
+      if [[ "$CI_COMMIT_REF_NAME" == "main" ]]; then # default branch on sonar is master
+        branchName=main
+      fi
+    - ./mvnw sonar:sonar -Dsonar.projectKey="$CI_PROJECT_NAME" -Dsonar.projectName="$CI_PROJECT_NAME" -Dsonar.host.url="$SONAR_URL" -Dsonar.login="$SONAR_TOKEN" -Dsonar.qualitygate.wait=true -Dsonar.branch.name="$branchName"
+    - 'echo "Please see the analysis on: https://sw-eng.sonar.fbi.h-da.de/dashboard?id=$CI_PROJECT_NAME&branch=$branchName#"'
+
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
