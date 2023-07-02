@@ -4,102 +4,105 @@ import de.hda.fbi.efussgaengerzone.domain.model.appointment.Appointment;
 import de.hda.fbi.efussgaengerzone.domain.model.appointment.AppointmentFilter;
 import de.hda.fbi.efussgaengerzone.domain.model.appointment.AppointmentRepository;
 import de.hda.fbi.efussgaengerzone.domain.model.shop.OpeningHours;
-import de.hda.fbi.efussgaengerzone.domain.model.shop.Shop;
-import de.hda.fbi.efussgaengerzone.domain.model.shop.ShopRepository;
-import de.hda.fbi.efussgaengerzone.domain.model.shop.WeeklyOpeningHours;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
-import java.util.function.Predicate;
 
 @Service
 public class AppointmentScheduling {
+    final ShopOrganization shopOrganization;
+    final AppointmentRepository appointmentRepository;
 
-    private final AppointmentRepository appointmentRepository;
-    private final ShopRepository shopRepository;
-
-    public AppointmentScheduling(AppointmentRepository appointmentRepository, ShopRepository shopRepository) {
+    public AppointmentScheduling(ShopOrganization shopOrganization, AppointmentRepository appointmentRepository) {
+        this.shopOrganization = shopOrganization;
         this.appointmentRepository = appointmentRepository;
-        this.shopRepository = shopRepository;
     }
 
-    // zu implementieren in Praktikum 8
     public void makeAppointment(UUID shopid, Appointment appointment) {
         appointmentRepository.save(shopid, appointment);
     }
 
-    // zu implementieren in Praktikum 8
     public void deleteAppointment(UUID shopId, UUID appointmentId) {
-        appointmentRepository.delete(shopId, appointmentId);
+        if (appointmentRepository.findForShopId(shopId).stream().anyMatch(appointment -> appointment.id().equals(appointmentId)))
+            appointmentRepository.delete(shopId, appointmentId);
     }
 
-    // zu implementieren in Praktikum 6
     public Optional<Appointment> findNextAppointment(UUID shopId) {
-        return appointmentRepository.findForShopId(shopId)
-                .stream().filter(appointment -> appointment.dateTime().isAfter(LocalDateTime.now()))
-                .sorted(Comparator.comparing(Appointment::dateTime))
-                .findFirst();
+        var appointments = appointmentRepository.findForShopId(shopId);
+        return appointments.stream().filter(appointment -> appointment.dateTime().isAfter(ChronoLocalDateTime.from(LocalDateTime.now()))).min(Comparator.comparing(Appointment::dateTime));
+        //return Optional.empty();
     }
-
-    // zu implementieren in Praktikum 6
     public Collection<Appointment> searchAppointments(UUID shopId, Set<AppointmentFilter> filters) {
-        Predicate<Appointment> combinedFilter = filters.stream()
-                .map(filter -> (Predicate<Appointment>) filter)
-                .reduce(Predicate::or).orElse(x -> false);
-
-        return appointmentRepository.findForShopId(shopId)
-                .stream()
-                .filter(filters.isEmpty() ? a -> true : combinedFilter)
-                .toList();
+        System.out.println("Searching appointments for shop " + shopId + " " + shopOrganization.shopRepository.findById(shopId).get().name());
+        //for (Appointment a:appointmentRepository.findForShopId(shopId)) {
+        //    System.out.println(a);
+        //}
+        //for (AppointmentFilter filter:filters
+        //     ) {
+        //    System.out.println(filter);
+        //}
+        return appointmentRepository.findForShopId(shopId).stream().filter(appointment -> filters.stream().allMatch(appointmentFilter -> appointmentFilter.test(appointment))).toList();
     }
-
-    // zu implementieren in Praktikum 8
     public List<LocalTime> availableDatesOnDay(UUID shopid, DayOfWeek dayOfWeek) throws ShopNotFoundException {
-        Shop shop = shopRepository.findById(shopid)
-                .orElseThrow(() -> new ShopNotFoundException(shopid));
-
-        OpeningHours openingHours = getOpeningHoursForDay(dayOfWeek, shop.weeklyOpeningHours());
-        if (openingHours == null) {
-            // shop is not open on the selected weekday. no opening hours available.
-            return List.of();
-        }
-
-        Integer minsPerCustomer = shop.minsPerCustomer();
-        List<LocalTime> allDates = new ArrayList<>();
-        for (LocalTime time = openingHours.openingTime();
-             time.compareTo(openingHours.closingTime()) < 0;
-             time = time.plus(minsPerCustomer, ChronoUnit.MINUTES)) {
-            allDates.add(time);
-        }
-
-        Collection<Appointment> appointments = appointmentRepository.findForShopId(shopid);
-
-        // remove all dates which have been booked already
-        return allDates.stream().filter(date -> appointments.stream().noneMatch(a -> a.dateTime().toLocalTime().equals(date)))
-                .toList();
-    }
-
-    // zu implementieren in Praktikum 8
-    private OpeningHours getOpeningHoursForDay(DayOfWeek dayOfWeek, WeeklyOpeningHours weeklyOpeningHours) {
+        var s = shopOrganization.shopRepository.findById(shopid).orElseThrow(() -> new ShopNotFoundException(shopid));
+        //System.out.println("Finding available dates for shop " + s.name() + " on " + dayOfWeek);
+        OpeningHours openingHours;
+        // get corresponding opening hours from shop by dayOfWeek
         switch (dayOfWeek) {
-            case MONDAY:
-                return weeklyOpeningHours.monday();
-            case TUESDAY:
-                return weeklyOpeningHours.tuesday();
-            case WEDNESDAY:
-                return weeklyOpeningHours.wednesday();
-            case THURSDAY:
-                return weeklyOpeningHours.thursday();
-            case FRIDAY:
-                return weeklyOpeningHours.friday();
-            case SATURDAY:
-                return weeklyOpeningHours.saturday();
-            default:
-                throw new IllegalArgumentException();
+            case MONDAY -> {
+                openingHours = s.weeklyOpeningHours().monday();
+                break;
+            }
+            case TUESDAY -> {
+                openingHours = s.weeklyOpeningHours().tuesday();
+                break;
+            }
+            case WEDNESDAY -> {
+                openingHours = s.weeklyOpeningHours().wednesday();
+                break;
+            }
+            case THURSDAY -> {
+                openingHours = s.weeklyOpeningHours().thursday();
+                break;
+            }
+            case FRIDAY -> {
+                openingHours = s.weeklyOpeningHours().friday();
+                break;
+            }
+            case SATURDAY -> {
+                openingHours = s.weeklyOpeningHours().saturday();
+                break;
+            }
+            case SUNDAY -> {
+                openingHours = null;
+                break;
+            }
+            default -> {
+                throw new IllegalStateException("Unexpected value: " + dayOfWeek);
+            }
         }
+        if (openingHours == null) return List.of();
+        // get all appointments for this shop
+        List<LocalTime> output = new ArrayList<>();
+        LocalTime timeCounter = openingHours.openingTime();
+        while (timeCounter.isBefore(openingHours.closingTime())) {
+            output.add(timeCounter);
+            timeCounter = timeCounter.plusMinutes(s.minsPerCustomer());
+        }
+        for (Appointment a : appointmentRepository.findForShopId(shopid)) {
+            if (a.dateTime().getDayOfWeek() == dayOfWeek) {
+                output.remove(a.dateTime().toLocalTime());
+            }
+        }
+        /*+
+        for (int i = openingHours.openingTime().getHour(); i <= openingHours.closingTime().getHour(); i++) {
+            output.add(LocalTime.of(i, 0));
+        }
+         */
+        return output;
     }
 }

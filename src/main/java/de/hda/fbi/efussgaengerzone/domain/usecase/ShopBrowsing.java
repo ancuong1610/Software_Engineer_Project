@@ -67,6 +67,7 @@ public class ShopBrowsing {
     }
 
     /**
+     *
      * @param uuid eindeutige ID
      * @return Shop-Referenz, falls diese vorhanden ist.
      */

@@ -1,5 +1,8 @@
 package de.hda.fbi.efussgaengerzone.domain.model.appointment;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
+
 public class AppointmentFilterFuture implements AppointmentFilter {
 
     public static final AppointmentFilterFuture INSTANCE = new AppointmentFilterFuture();
@@ -11,6 +14,6 @@ public class AppointmentFilterFuture implements AppointmentFilter {
     // Zu implementieren in Praktikum 6
     @Override
     public boolean test(Appointment appointment) {
-        return true;
+        return appointment.dateTime().isAfter(ChronoLocalDateTime.from(LocalDateTime.now()));
     }
 }
