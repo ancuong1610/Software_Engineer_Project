@@ -54,24 +54,13 @@ public class OwnerRegistration {
     }
 
     @SuppressWarnings("squid:S2629")
-    public void updateOwner(String oldEmail, String newEmail, String newName) throws OwnerNotFoundException {
-        Owner owner = ownerRepository.find(oldEmail);
-        if (owner == null) {
-            throw new OwnerNotFoundException(oldEmail);
-        }
-
+    public void updateOwner(String oldEmail, String newEmail, String newName) {
+        var owner = ownerRepository.find(oldEmail);
+        var shop = shopBrowsing.getShopByOwner(oldEmail);
         if (!oldEmail.equals(newEmail)) {
-            log.debug("error ");
-            var shop = shopBrowsing.getShopByOwner(oldEmail);
-            log.debug("error 2 ", oldEmail, newEmail, shop.id());
             shopOrganization.updateShopEmail(shop.id(), newEmail);
+            ownerRepository.save(new Owner(newEmail, newName, owner.password()));
         }
-
-        ownerRepository.save(new Owner(
-                newName,
-                newEmail,
-                owner.password()
-        ));
     }
 
 
