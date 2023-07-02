@@ -5,12 +5,7 @@ import de.hda.fbi.efussgaengerzone.domain.model.appointment.AppointmentRepositor
 import de.hda.fbi.efussgaengerzone.domain.usecase.AppointmentNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Repository
 public class AppointmentRepositoryImpl implements AppointmentRepository {
@@ -40,4 +35,6 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         shopAppointments.remove(appointment);
         return appointment;
     }
+
+
 }
