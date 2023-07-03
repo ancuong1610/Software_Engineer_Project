@@ -3,7 +3,7 @@ variables:
   SONAR_URL: https://sonarqube-software-engineering-sonarqube-software-engeneering.apps.ocp.fbi.h-da.de
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn"
   CI_PROJECT_NAME: "efussgaengerzone_mo2_p4"
-  SONAR_TOKEN: "sqp_c8a4102cdaa27151d26fb17b0e82c303c13cad68"
+  SONAR_TOKEN: "sqp_9ab31ce5006f09e8d6949e1d958ddcdb879179a1"
 
 stages:
   - build
