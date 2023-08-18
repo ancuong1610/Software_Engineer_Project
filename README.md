@@ -1,11 +1,5 @@
 Aufbau eFußgängerzone
 ============================
-*Import von https://code.fbi.h-da.de/f.buehler/ss23_se_finale_loesung/-/tree/main/
-
-*Hinweis für Studenten:* Teile dieser Dokumentation ergeben sich erst durch Wissen der späteren
-Vorlesungsveranstaltungen. Fortgeschrittene Themen aus dem Teil Software Architektur werden in der Vorlesung nur am
-Rande behandelt. Lassen Sie sich nicht entmutigen, wenn Sie dieser Dokumentation nicht beim ersten Lesen folgen können.
-
 Dieses Dokument beschreibt den Aufbau des Software Projekts _eFusgängerzone_.
 Es dient dem Zweck eines tieferen Verständnisses des Aufbaus des Projekts und ist gleichzeitig eine Richtschnur für die
 Erweiterung des Projekts.
